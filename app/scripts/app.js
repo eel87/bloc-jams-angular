@@ -1,1 +1,4 @@
-angular.module=('blocJams', []);
+(function(){
+    angular
+        .module('blocJams',[]);
+})()
