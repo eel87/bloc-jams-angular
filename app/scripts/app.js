@@ -1,20 +1,20 @@
 (function() {
   function config($stateProvider, $locationProvider) {
     $locationProvider
-      .html5mode({
+      .html5Mode({
         enabled: true,
         requireBase: false
       });
 
       $stateProvider
-        .state('landing', {
-            url: '/',
-            templateURL: '/templates/landing.html'
-        })
-        .state('album', {
-            url: '/album',
-            templateURL: '/templates/album.html'
-        });
+         .state('landing', {
+             url: '/',
+             templateUrl: '/templates/landing.html'
+         })
+         .state('album', {
+             url: '/album',
+             templateUrl: '/templates/album.html'
+         });
   }
 
   angular
@@ -22,5 +22,3 @@
     .config(config);
 
 })();
-
-// angular.module('blocJams', ['ui.router']);
