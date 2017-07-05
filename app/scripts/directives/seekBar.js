@@ -100,7 +100,6 @@
                 scope.onChange({value: newValue});
             }
         };
-        
       }
     };
   }
