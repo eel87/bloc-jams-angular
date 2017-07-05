@@ -1,5 +1,5 @@
 (function() {
-  function SongPlayer(Fixtures) {
+  function SongPlayer($rootScope, Fixtures) {
     var SongPlayer = {};
 
     /**
@@ -8,10 +8,6 @@
     */
     var currentAlbum = Fixtures.getAlbum();
 
-    /**
-    * @desc Buzz object audio file
-    * @type {Object}
-    */
     var currentBuzzObject = null;
 
     /**
@@ -29,10 +25,12 @@
         preload: true
       });
 
-      /**
-      * @desc Active song object from list of songs
-      * @type {Object}
-      */
+      currentBuzzObject.bind('timeupdate', function() {
+        $rootScope.$apply(function() {
+          SongPlayer.currentTime = currentBuzzObject.getTime();
+        });
+      });
+
       SongPlayer.currentSong = song;
     };
 
@@ -57,6 +55,11 @@
     };
 
     SongPlayer.currentSong = null;
+    /**
+    * @desc Current playback time (in seconds) of currently playing song
+    * @type {Number}
+    */
+    SongPlayer.currentTime = null;
 
     SongPlayer.play = function(song) {
       song = song || SongPlayer.currentSong;
@@ -76,10 +79,6 @@
       song.playing = false;
     };
 
-    /**
-    @desc navigates from currently playing song to previous song
-    @type {Object}
-    */
     SongPlayer.previous = function() {
       var currentSongIndex = getSongIndex(SongPlayer.currentSong);
       currentSongIndex--;
@@ -93,10 +92,6 @@
       }
     };
 
-    /**
-    @desc navigates from currently playing song to next song
-    @type {Object}
-    */
     SongPlayer.next = function() {
       var currentSongIndex = getSongIndex(SongPlayer.currentSong);
       currentSongIndex++;
@@ -107,6 +102,17 @@
         var song = currentAlbum.songs[currentSongIndex];
         setSong(song);
         playSong(song);
+      }
+    };
+
+    /**
+    @function setCurrentTime
+    @desc set current time (in seconds) of currently playing song
+    @param {Number} time
+    */
+    SongPlayer.setCurrentTime = function(time) {
+      if (currentBuzzObject) {
+        currentBuzzObject.setTime(time);
       }
     };
 
@@ -124,5 +130,5 @@
 
   angular
     .module('blocJams')
-    .factory('SongPlayer', ['Fixtures', SongPlayer]);
+    .factory('SongPlayer', ['$rootScope', 'Fixtures', SongPlayer]);
 })();
